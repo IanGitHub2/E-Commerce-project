@@ -5,10 +5,10 @@ import useStyles from './styles'
 
 const CartItem = ({ item, onUpdateCartQty, onRemovalFromCart }) => {
     const classes = useStyles();
-
+//image={item.media.source} for liv key not test key commercejs
     return (
         <Card>
-            <CardMedia image={item.media.source} alt={item.name} className={classes.media}/>
+            <CardMedia image={item.image.url} alt={item.name} className={classes.media}/>
             <CardContent className={classes.cardContent}>
                 <Typography variant="h4">{item.name}</Typography>
                 <Typography variant="h5">{item.line_total.formatted_with_symbol}</Typography>

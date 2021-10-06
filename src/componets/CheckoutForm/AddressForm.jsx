@@ -19,11 +19,6 @@ const AddressForm = ({ checkoutToken, next }) => {
 
     const methods = useForm();
 
-    const countriesName = Object.entries(shippingCountries).map(([code, name]) => ({ id: code, label: name }));
-    const SubdivisionsName = Object.entries(shippingSubdivisions).map(([code, name]) => ({ id: code, label: name }));
-    const optionsName = shippingOpitions.map((sO) => ({ id: sO.id, label: `${sO.description} - (${sO.price.formatted_with_symbol})` }));
-
-
     const fetchShippingCountries = async (checkoutTokenId) => {
         const { countries } = await commerce.services.localeListShippingCountries(checkoutTokenId);
 
@@ -55,13 +50,13 @@ const AddressForm = ({ checkoutToken, next }) => {
 
     useEffect(() => {
         if (shippingSubdivision) fetchShippingOptions(checkoutToken.id, shippingCountry, shippingSubdivision)
-    }, [shippingSubdivisions]);
+    }, [shippingSubdivision]);
 
     return (
         <>
             <Typography variant="h6" gutterBottom>Shipping Address</Typography>
             <FormProvider {...methods}>
-                <form onSubmit={methods.handleSubmit(( data, e) => next({ ...data, shippingCountry, shippingSubdivision, shippingOpition }))}>
+                <form onSubmit={methods.handleSubmit(( data ) => next({ ...data, shippingCountry, shippingSubdivision, shippingOpition }))}>
                     <Grid container spacing={3}>
                         <FormInput name='firstName' label='First name'/>
                         <FormInput name='lastName' label='Last name'/>
@@ -72,24 +67,30 @@ const AddressForm = ({ checkoutToken, next }) => {
                         <Grid item xs={12} sm={6}>
                             <InputLabel>Shipping Country</InputLabel>
                             <Select value={shippingCountry} fullWidth onChange={(e) => setShippingCountry(e.target.value)}>
-                                {countriesName.map((country) => (
-                                    <MenuItem key={country.id} value={country.id}> {country.label} </MenuItem>
+                                {Object.entries(shippingCountries).map(([code, name]) => ({ id: code, label: name })).map((item) => (
+                                    <MenuItem key={item.id} value={item.id}>
+                                        {item.label}
+                                    </MenuItem>
                                 ))}
                             </Select>
                         </Grid>
                         <Grid item xs={12} sm={6}>
                             <InputLabel>Shipping Subdivision</InputLabel>
                             <Select value={shippingSubdivision} fullWidth onChange={(e) => setShippingSubdivision(e.target.value)}>
-                                {SubdivisionsName.map((subdivision) => (
-                                    <MenuItem key={subdivision.id} value={subdivision.id}> {subdivision.label} </MenuItem>
+                                {Object.entries(shippingSubdivisions).map(([code, name]) => ({ id: code, label: name })).map((item) => (
+                                    <MenuItem key={item.id} value={item.id}>
+                                        {item.label}
+                                    </MenuItem>
                                 ))}
                             </Select>
                         </Grid>
                         <Grid item xs={12} sm={6}>
                             <InputLabel>Shipping Options</InputLabel>
                             <Select value={shippingOpition} fullWidth onChange={(e) => setShippingOption(e.target.value)}>
-                                {optionsName.map((option) => (
-                                    <MenuItem key={option.id} value={option.id}> {option.label} </MenuItem>
+                                {shippingOpitions.map((sO) => ({ id: sO.id, label: `${sO.description} - (${sO.price.formatted_with_symbol})` })).map((item) => (
+                                    <MenuItem key={item.id} value={item.id}>
+                                        {item.label}
+                                    </MenuItem>
                                 ))}
                             </Select>
                         </Grid>

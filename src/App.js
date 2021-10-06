@@ -16,6 +16,7 @@ const App = () => {
             setProducts();
         }else{
             setProducts(data);
+            console.log(data)
         }
     } 
 
