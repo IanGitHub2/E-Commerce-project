@@ -3,17 +3,22 @@ import { TextField, Grid } from '@material-ui/core';
 import { useFormContext, Controller, useForm } from 'react-hook-form';
 
 const FormInput = ({ name, label, required }) => {
-    const { control } = useForm();
+    const { control } = useFormContext();
+    const isError = false;
 
     return (
         <Grid item xs={12} sm={6}>
             <Controller
             render = {({ field}) => (
-            <TextField {...field} fullWidth label={label} rules={{ required: true }} />
+            <TextField {...field} fullWidth label={label} rule={{ required: true }} />
             )}
-            control={control}
+            as={TextField}
             name={name}
-            defaultValue=""
+            control={control}
+            label={label}
+            fullWidth
+            required={required}
+            error={isError}
         />
         </Grid>
     )

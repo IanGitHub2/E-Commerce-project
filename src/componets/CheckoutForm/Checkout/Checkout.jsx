@@ -18,22 +18,39 @@ const Checkout = ({ cart, order, onCaptureCheckout, error }) => {
     const history = useHistory();
 
     useEffect(() => {
-        const generateToken = async () => {
-            try {
-                const token = await commerce.checkout.generateToken(cart.id, { type: 'cart' });
-
-                setCheckoutToken(token);
-            }catch (error) {
-                history.pushState('/');
-            }
-        }
+        if (cart.id) {
+            const generateToken = async () => {
+                try {
+                    const token = await commerce.checkout.generateToken(cart.id, { type: 'cart' });
+    
+                    setCheckoutToken(token);
+                } catch {
+                    if (activeStep !== steps.length) history.push('/');
+                }
+            };
+    
         generateToken();
+        }
     }, [cart]);
+    
+
+    // useEffect(() => {
+    //     const generateToken = async () => {
+    //         try {
+    //             const token = await commerce.checkout.generateToken(cart.id, { type: 'cart' });
+
+    //             setCheckoutToken(token);
+    //         }catch (error) {
+    //             history.pushState('/');
+    //         }
+    //     }
+    //     generateToken();
+    // }, [cart]);
 
     const nextStep = () => setActiveStep((prevActiveStep) => prevActiveStep + 1);
     const backStep = () => setActiveStep((prevActiveStep) => prevActiveStep - 1);
 
-    const next = (data) => {
+    const test = (data) => {
         setShippingData(data);
 
         nextStep();
@@ -74,15 +91,15 @@ const Checkout = ({ cart, order, onCaptureCheckout, error }) => {
 
     if (error) {
         <>
-        <Typography variant="h5">Error: {error}</Typography>
-        <br/>
-        <Button component={Link} to="/" variant="outlined" type="button">Back to Home</Button>
+            <Typography variant="h5">Error: {error}</Typography>
+            <br/>
+            <Button component={Link} to="/" variant="outlined" type="button">Back to Home</Button>
         </>
     }
 
     const Form = () => activeStep === 0 
-    ? <AddressForm checkoutToken={checkoutToken} next={next}/> 
-    : <PaymentForm shippingData={shippingData} checkoutToken={checkoutToken} nextStep={nextStep} backStep={backStep} onCaptureCheckout={onCaptureCheckout}/>;
+    ? <AddressForm checkoutToken={checkoutToken} nextStep={nextStep} setShippingData={setShippingData} test={test}/> 
+    : <PaymentForm checkoutToken={checkoutToken} nextStep={nextStep} backStep={backStep} shippingData={shippingData} onCaptureCheckout={onCaptureCheckout}/>;
     //timeout={timeout} payment form
 
     return (

@@ -40,7 +40,7 @@ const PaymentForm = ({ checkoutToken, shippingData, nextStep, backStep, onCaptur
                 },
             }
 
-            onCaptureCheckout(checkoutToken.id, orderData);
+            onCaptureCheckout(checkoutToken.id, orderData);console.log(orderData)
 
             // timeout();
 
