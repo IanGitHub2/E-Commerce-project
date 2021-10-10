@@ -40,7 +40,7 @@ const PaymentForm = ({ checkoutToken, shippingData, nextStep, backStep, onCaptur
                 },
             }
 
-            onCaptureCheckout(checkoutToken.id, orderData);console.log(orderData)
+            onCaptureCheckout(checkoutToken.id, orderData);
 
             // timeout();
 
@@ -52,7 +52,8 @@ const PaymentForm = ({ checkoutToken, shippingData, nextStep, backStep, onCaptur
         <>
             <Review checkoutToken={checkoutToken}/>
             <Divider />
-            <Typography variant="h6" gutterBottom style={{ margin: '20px 0'}}>Payment method</Typography>
+            <Typography variant="h6" gutterBottom style={{ margin: '20px 0'}}>Payment method(This is a test site)</Typography>
+            <Typography variant="h9" gutterBottom >Use this fake Card:(4242 4242 4242 4242 04/24 242 42424)</Typography>
             <Elements stripe={stripePromise}>
                 <ElementsConsumer>
                     {({ elements, stripe }) => (
